@@ -5,6 +5,16 @@ const keys = require("../config/keys");
 
 const User = mongoose.model("users"); // one arg means pulling, 2 means adding
 
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id).then(user => {
+    done(null, user);
+  });
+});
+
 // Set up Passport Google OAuth Strategy
 passport.use(
   new GoogleStrategy(
